@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Calendar, Clock, ArrowLeft } from 'lucide-react'
+import { Calendar, Clock, ArrowLeft, Users } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import toast from 'react-hot-toast'
 
@@ -29,6 +29,11 @@ export default function ViewEventPage() {
     attending: true,
     message: ''
   })
+  const [rsvpStats, setRsvpStats] = useState({
+    total: 0,
+    attending: 0,
+    notAttending: 0
+  })
 
   useEffect(() => {
     if (inviteCode) {
@@ -37,6 +42,28 @@ export default function ViewEventPage() {
       setLoading(false)
     }
   }, [inviteCode])
+
+  const fetchRsvpStats = async (eventId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('rsvp')
+        .select('attending')
+        .eq('event_id', eventId)
+
+      if (error) throw error
+
+      const attending = data.filter(r => r.attending).length
+      const notAttending = data.filter(r => !r.attending).length
+      
+      setRsvpStats({
+        total: data.length,
+        attending,
+        notAttending
+      })
+    } catch (error) {
+      console.error('Error fetching RSVP stats:', error)
+    }
+  }
 
   const fetchEvent = async () => {
     try {
@@ -48,6 +75,11 @@ export default function ViewEventPage() {
 
       if (error) throw error
       setEvent(data)
+      
+      // Fetch RSVP stats after event is loaded
+      if (data?.id) {
+        await fetchRsvpStats(data.id)
+      }
     } catch (error: any) {
       toast.error('Event not found')
       console.error('Error fetching event:', error)
@@ -79,6 +111,11 @@ export default function ViewEventPage() {
       
       toast.success(rsvpData.attending ? 'RSVP confirmed!' : 'RSVP declined')
       setRsvpData({ name: '', email: '', attending: true, message: '' })
+      
+      // Refresh RSVP stats after successful submission
+      if (event?.id) {
+        await fetchRsvpStats(event.id)
+      }
     } catch (error: any) {
       toast.error('Error submitting RSVP')
       console.error('Error:', error)
@@ -168,6 +205,33 @@ export default function ViewEventPage() {
               </div>
             </div>
           </div>
+
+          {/* RSVP Statistics */}
+          {rsvpStats.total > 0 && (
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6 mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <Users className="h-6 w-6 mr-2 text-primary-600" />
+                Guest Responses
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4 text-center">
+                  <div className="text-3xl font-bold text-blue-600 mb-1">{rsvpStats.total}</div>
+                  <div className="text-sm text-blue-700 font-medium">Total Responses</div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 text-center">
+                  <div className="text-3xl font-bold text-green-600 mb-1">{rsvpStats.attending}</div>
+                  <div className="text-sm text-green-700 font-medium">Attending</div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-lg p-4 text-center">
+                  <div className="text-3xl font-bold text-red-600 mb-1">{rsvpStats.notAttending}</div>
+                  <div className="text-sm text-red-700 font-medium">Not Attending</div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* RSVP Form */}
           <div className="space-y-6">
