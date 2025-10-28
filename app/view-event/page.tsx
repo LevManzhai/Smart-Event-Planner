@@ -150,17 +150,21 @@ export default function ViewEventPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Header */}
+      {/* Header - Full header for large screens, back button only for small screens */}
       <header className="bg-white/90 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+            {/* Logo - Hidden on small screens */}
+            <Link href="/" className="hidden lg:flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <Calendar className="h-8 w-8 text-primary-600" />
               <span className="text-2xl font-bold text-gray-900">Smart Event Planner</span>
             </Link>
-            <Link href="/" className="flex items-center space-x-2 text-gray-600 hover:text-primary-600 transition-colors">
+            
+            {/* Back button - Always visible */}
+            <Link href="/events" className="flex items-center space-x-2 text-gray-600 hover:text-primary-600 transition-colors">
               <ArrowLeft className="h-5 w-5" />
-              <span>Back to Home</span>
+              <span className="hidden sm:inline">Back to Events</span>
+              <span className="sm:hidden">Back</span>
             </Link>
           </div>
         </div>
