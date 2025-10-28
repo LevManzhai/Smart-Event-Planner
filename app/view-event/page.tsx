@@ -71,8 +71,7 @@ export default function ViewEventPage() {
           event_id: event?.id,
           name: rsvpData.name,
           email: rsvpData.email,
-          attending: rsvpData.attending,
-          message: rsvpData.message || null
+          attending: rsvpData.attending
         })
 
       if (error) throw error
