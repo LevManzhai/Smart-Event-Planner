@@ -24,6 +24,7 @@ interface RSVP {
   email: string
   name: string
   attending: boolean
+  created_at: string
 }
 
 export default function InvitePage({ params }: { params: { id: string } }) {
