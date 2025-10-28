@@ -27,7 +27,10 @@ export default function AuthPage() {
         })
         if (error) throw error
         toast.success('Welcome!')
-        router.push('/events')
+        // Небольшая задержка для сохранения сессии
+        setTimeout(() => {
+          router.push('/')
+        }, 100)
       } else {
         const { error } = await supabase.auth.signUp({
           email,

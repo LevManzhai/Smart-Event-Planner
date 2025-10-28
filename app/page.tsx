@@ -14,12 +14,36 @@ export default function HomePage() {
 
   useEffect(() => {
     checkUser()
+
+    // Слушаем изменения аутентификации
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        setUser(session?.user || null)
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null)
+      }
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   const checkUser = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    setUser(user)
-    setLoading(false)
+    try {
+      // Проверяем сессию из localStorage
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        setUser(session.user)
+      } else {
+        // Если нет сессии, проверяем пользователя
+        const { data: { user } } = await supabase.auth.getUser()
+        setUser(user)
+      }
+    } catch (error) {
+      console.error('Error checking user:', error)
+      setUser(null)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleSignOut = async () => {
