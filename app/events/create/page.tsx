@@ -244,6 +244,22 @@ export default function CreateEventPage() {
                 Event Photo
               </label>
               
+              {/* Photo Tips */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start space-x-3">
+                  <ImageIcon className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-blue-800">
+                    <p className="font-medium mb-1">Photo Tips for Best Results:</p>
+                    <ul className="space-y-1 text-blue-700">
+                      <li>• Use <strong>landscape orientation</strong> (wider than tall) for better display</li>
+                      <li>• Recommended size: <strong>1200x800px</strong> or similar aspect ratio</li>
+                      <li>• Choose <strong>bright, clear images</strong> that represent your event</li>
+                      <li>• Avoid text-heavy images - keep them simple and visual</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
               {!imagePreview ? (
                 <div
                   className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
