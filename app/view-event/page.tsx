@@ -166,10 +166,11 @@ export default function ViewEventPage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Event Details */}
+          {/* Left Column - Event Details + RSVP Statistics */}
           <div className="space-y-6">
+            {/* Event Details */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
               {event.image_url && (
                 <img
@@ -204,36 +205,36 @@ export default function ViewEventPage() {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* RSVP Statistics */}
-          {rsvpStats.total > 0 && (
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6 mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <Users className="h-6 w-6 mr-2 text-primary-600" />
-                Guest Responses
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4 text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-1">{rsvpStats.total}</div>
-                  <div className="text-sm text-blue-700 font-medium">Total Responses</div>
-                </div>
+            {/* RSVP Statistics - Compact Version */}
+            {rsvpStats.total > 0 && (
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-4">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                  <Users className="h-5 w-5 mr-2 text-primary-600" />
+                  Guest Responses
+                </h3>
                 
-                <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 text-center">
-                  <div className="text-3xl font-bold text-green-600 mb-1">{rsvpStats.attending}</div>
-                  <div className="text-sm text-green-700 font-medium">Attending</div>
-                </div>
-                
-                <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-lg p-4 text-center">
-                  <div className="text-3xl font-bold text-red-600 mb-1">{rsvpStats.notAttending}</div>
-                  <div className="text-sm text-red-700 font-medium">Not Attending</div>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-blue-600 mb-1">{rsvpStats.total}</div>
+                    <div className="text-xs text-blue-700 font-medium">Total</div>
+                  </div>
+                  
+                  <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-green-600 mb-1">{rsvpStats.attending}</div>
+                    <div className="text-xs text-green-700 font-medium">Attending</div>
+                  </div>
+                  
+                  <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-lg p-3 text-center">
+                    <div className="text-2xl font-bold text-red-600 mb-1">{rsvpStats.notAttending}</div>
+                    <div className="text-xs text-red-700 font-medium">Not Coming</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
-          {/* RSVP Form */}
+          {/* Right Column - RSVP Form */}
           <div className="space-y-6">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">RSVP</h2>
