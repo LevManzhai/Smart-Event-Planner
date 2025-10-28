@@ -65,6 +65,7 @@ export default function ViewEventPage() {
     }
 
     try {
+      // Fixed: removed message field that doesn't exist in rsvp table
       const { error } = await supabase
         .from('rsvp')
         .insert({
