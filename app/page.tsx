@@ -9,9 +9,6 @@ export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user, loading, signOut } = useAuth()
 
-  // Отладка
-  console.log('HomePage - user:', user?.email, 'loading:', loading)
-
   const handleSignOut = async () => {
     await signOut()
   }

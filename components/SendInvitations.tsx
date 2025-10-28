@@ -34,7 +34,7 @@ export default function SendInvitations({ eventId, eventTitle, inviteCode, onClo
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          eventId: inviteCode, // Используем invite_code вместо eventId
+          eventId: inviteCode, // Use invite_code instead of eventId
           emails: emailList,
           message: message || `You're invited to "${eventTitle}"!`
         }),
