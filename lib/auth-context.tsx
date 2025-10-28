@@ -18,29 +18,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Проверяем localStorage при загрузке
-    const savedUser = localStorage.getItem('supabase_user')
-    if (savedUser) {
+    const initializeAuth = async () => {
       try {
-        setUser(JSON.parse(savedUser))
-      } catch (error) {
-        localStorage.removeItem('supabase_user')
-      }
-    }
+        // Сначала проверяем localStorage
+        const savedUser = localStorage.getItem('supabase_user')
+        if (savedUser) {
+          try {
+            const userData = JSON.parse(savedUser)
+            setUser(userData)
+            console.log('User loaded from localStorage:', userData.email)
+          } catch (error) {
+            console.error('Error parsing saved user:', error)
+            localStorage.removeItem('supabase_user')
+          }
+        }
 
-    // Проверяем сессию Supabase
-    const checkSession = async () => {
-      try {
+        // Затем проверяем сессию Supabase
         const { data: { session } } = await supabase.auth.getSession()
+        console.log('Supabase session:', session)
+        
         if (session?.user) {
           setUser(session.user)
           localStorage.setItem('supabase_user', JSON.stringify(session.user))
-        } else {
+          console.log('User set from session:', session.user.email)
+        } else if (!savedUser) {
           setUser(null)
           localStorage.removeItem('supabase_user')
         }
       } catch (error) {
-        console.error('Error checking session:', error)
+        console.error('Error initializing auth:', error)
         setUser(null)
         localStorage.removeItem('supabase_user')
       } finally {
@@ -48,16 +54,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    checkSession()
+    initializeAuth()
 
     // Слушаем изменения аутентификации
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state change:', event, session?.user?.email)
+      
       if (event === 'SIGNED_IN' && session?.user) {
         setUser(session.user)
         localStorage.setItem('supabase_user', JSON.stringify(session.user))
+        console.log('User signed in:', session.user.email)
       } else if (event === 'SIGNED_OUT') {
         setUser(null)
         localStorage.removeItem('supabase_user')
+        console.log('User signed out')
+      } else if (event === 'TOKEN_REFRESHED' && session?.user) {
+        setUser(session.user)
+        localStorage.setItem('supabase_user', JSON.stringify(session.user))
+        console.log('Token refreshed for:', session.user.email)
       }
     })
 
