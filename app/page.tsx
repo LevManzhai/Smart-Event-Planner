@@ -1,54 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { Calendar, Users, Mail, Clock, ArrowRight, Sparkles, User, LogOut } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/lib/auth-context'
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const router = useRouter()
-
-  useEffect(() => {
-    checkUser()
-
-    // Слушаем изменения аутентификации
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        setUser(session?.user || null)
-      } else if (event === 'SIGNED_OUT') {
-        setUser(null)
-      }
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
-  const checkUser = async () => {
-    try {
-      // Проверяем сессию из localStorage
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session?.user) {
-        setUser(session.user)
-      } else {
-        // Если нет сессии, проверяем пользователя
-        const { data: { user } } = await supabase.auth.getUser()
-        setUser(user)
-      }
-    } catch (error) {
-      console.error('Error checking user:', error)
-      setUser(null)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { user, loading, signOut } = useAuth()
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
+    await signOut()
   }
 
   return (

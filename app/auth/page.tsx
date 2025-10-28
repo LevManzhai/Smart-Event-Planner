@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/lib/auth-context'
 import { Calendar, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -14,6 +14,7 @@ export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const { signIn, signUp } = useAuth()
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,22 +22,11 @@ export default function AuthPage() {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
-        if (error) throw error
+        await signIn(email, password)
         toast.success('Welcome!')
-        // Небольшая задержка для сохранения сессии
-        setTimeout(() => {
-          router.push('/')
-        }, 100)
+        router.push('/')
       } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        })
-        if (error) throw error
+        await signUp(email, password)
         toast.success('Please check your email to confirm registration')
       }
     } catch (error: any) {
