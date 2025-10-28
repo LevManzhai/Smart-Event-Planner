@@ -66,7 +66,7 @@ export default function ViewEventPage() {
 
     try {
       const { error } = await supabase
-        .from('rsvps')
+        .from('rsvp')
         .insert({
           event_id: event?.id,
           name: rsvpData.name,
