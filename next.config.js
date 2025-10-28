@@ -5,8 +5,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/Smart-Event-Planner' : '',
-  basePath: process.env.NODE_ENV === 'production' ? '/Smart-Event-Planner' : '',
+  assetPrefix: '/Smart-Event-Planner',
+  basePath: '/Smart-Event-Planner',
 }
 
 module.exports = nextConfig

@@ -6,8 +6,8 @@ import { Toaster } from 'react-hot-toast'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Smart Event Planner - Планируй события легко',
-  description: 'Создавайте и управляйте событиями за несколько минут. Приглашайте гостей и отслеживайте RSVP.',
+  title: 'Smart Event Planner - Plan Events Easily',
+  description: 'Create and manage events in minutes. Invite guests and track RSVPs.',
 }
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ru">
+    <html lang="en">
       <body className={inter.className}>
         {children}
         <Toaster position="top-right" />
