@@ -58,7 +58,7 @@ export default function SendInvitations({ eventId, eventTitle, inviteCode, onClo
   const baseUrl = process.env.NODE_ENV === 'production' 
     ? 'https://levmanzhai.github.io/Smart-Event-Planner'
     : window.location.origin
-  const inviteLink = `${baseUrl}/invite/${inviteCode}`
+  const inviteLink = `${baseUrl}/view-event?id=${inviteCode}`
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">

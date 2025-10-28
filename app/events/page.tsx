@@ -99,7 +99,7 @@ export default function EventsPage() {
     const baseUrl = process.env.NODE_ENV === 'production' 
       ? 'https://levmanzhai.github.io/Smart-Event-Planner'
       : window.location.origin
-    const link = `${baseUrl}/invite/${inviteCode}`
+    const link = `${baseUrl}/view-event?id=${inviteCode}`
     navigator.clipboard.writeText(link)
     toast.success('Link copied to clipboard!')
   }
@@ -291,7 +291,7 @@ export default function EventsPage() {
                       <span className="truncate">Send</span>
                     </button>
                     <Link
-                      href={`/invite/${event.invite_code}`}
+                      href={`/view-event?id=${event.invite_code}`}
                       className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium text-xs py-2.5 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center"
                     >
                       <Users className="h-3 w-3 mr-1" />

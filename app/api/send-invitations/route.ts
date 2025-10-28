@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     const baseUrl = process.env.NODE_ENV === 'production' 
       ? 'https://levmanzhai.github.io/Smart-Event-Planner'
       : 'http://localhost:3000'
-    const inviteLink = `${baseUrl}/invite/${eventId}`
+    const inviteLink = `${baseUrl}/view-event?id=${eventId}`
     
     // Here you would send emails using EmailJS or another service
     // For demonstration, we'll just log the details
