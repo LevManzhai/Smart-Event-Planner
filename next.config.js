@@ -12,6 +12,9 @@ const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  // Отключаем RSC для статического экспорта
+  reactStrictMode: false,
+  swcMinify: true,
 }
 
 module.exports = nextConfig
