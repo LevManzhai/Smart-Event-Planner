@@ -9,11 +9,6 @@ import { format, parseISO } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import toast from 'react-hot-toast'
 
-// Generate static params for static export
-export async function generateStaticParams() {
-  return []
-}
-
 interface Event {
   id: string
   title: string
